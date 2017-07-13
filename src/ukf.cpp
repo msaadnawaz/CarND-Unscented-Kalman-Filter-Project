@@ -183,17 +183,21 @@ void UKF::Prediction(double delta_t) {
   ////////////////////////////////
 
   //predict sigma points
-  double v, yaw, yawd, nu_a, nu_yawdd;
+  double p_x, p_y, v, yaw, yawd, nu_a, nu_yawdd;
+  VectorXd curr_x = VectorXd(n_x_);
   VectorXd integ = VectorXd(n_x_);
   VectorXd proc_noise = VectorXd(n_x_);
 
   for(int i=0; i<(2*n_aug_+1); i++){
+	  p_x = Xsig_aug_.col(i)(0);
+	  p_y = Xsig_aug_.col(i)(1);
 	  v = Xsig_aug_.col(i)(2);
 	  yaw = Xsig_aug_.col(i)(3);
 	  yawd = Xsig_aug_.col(i)(4);
 	  nu_a = Xsig_aug_.col(i)(5);
 	  nu_yawdd = Xsig_aug_.col(i)(6);
 
+	  curr_x << p_x, p_y, v, yaw, yawd;
 	  //avoid division by zero
 	  if (fabs(yawd) > 0.001) {
 		  integ << v/yawd * (sin(yaw + yawd * delta_t) - sin(yaw)),
@@ -217,7 +221,7 @@ void UKF::Prediction(double delta_t) {
 					delta_t * nu_yawdd;
 
 	  //write predicted sigma points into right column
-	  Xsig_pred_.col(i) = Xsig_aug_.block(0,i,5,1) + integ + proc_noise;
+	  Xsig_pred_.col(i) = curr_x + integ + proc_noise;
   }
 
   ///////////////////////////////////////
