@@ -28,11 +28,19 @@ public:
   ///* state covariance matrix
   MatrixXd P_;
 
+  MatrixXd P_aug_;
+
   ///* predicted sigma points matrix
   MatrixXd Xsig_pred_;
 
+  //create sigma point augmented matrix
+  MatrixXd Xsig_aug_;
+
   ///* time when the state is true, in us
   long long time_us_;
+
+  // previous timestamp
+  long long previous_timestamp_;
 
   ///* Process noise standard deviation longitudinal acceleration in m/s^2
   double std_a_;
@@ -64,9 +72,11 @@ public:
   ///* Augmented state dimension
   int n_aug_;
 
+  //create augmented mean vector
+  VectorXd x_aug_;
+
   ///* Sigma point spreading parameter
   double lambda_;
-
 
   /**
    * Constructor
