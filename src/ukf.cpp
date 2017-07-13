@@ -137,9 +137,11 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
   //////////////////
 
   if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
+	  cout<< endl << "updating radar" <<endl;
 	  UpdateRadar(meas_package);
   }
   else if(meas_package.sensor_type_ == MeasurementPackage::LASER) {
+	  cout<< endl << "updating lidar" <<endl;
 	  UpdateLidar(meas_package);
   }
   previous_timestamp_ = meas_package.timestamp_;
@@ -183,6 +185,7 @@ void UKF::Prediction(double delta_t) {
 	  Xsig_aug_.col(i+1+n_aug_) = x_aug_ - sqrt(lambda_ + n_aug_) * A.col(i);
   }
 
+  cout<< endl << "sigma points generation done" <<endl;
   ////////////////////////////////
   /* ***PREDICT SIGMA POINTS*** */
   ////////////////////////////////
@@ -229,6 +232,7 @@ void UKF::Prediction(double delta_t) {
 	  Xsig_pred_.col(i) = curr_x + integ + proc_noise;
   }
 
+  cout<< endl << "sigma points prediction done" <<endl;
   ///////////////////////////////////////
   /* ***PREDICT MEAN AND COVARIANCE*** */
   ///////////////////////////////////////
