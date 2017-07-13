@@ -243,6 +243,9 @@ void UKF::Prediction(double delta_t) {
 	  P_ += weights_(i) * x_diff * x_diff.transpose();
   }
 
+  cout << "Prediction x: \n" << x_ << endl;
+  cout << "Prediction P: \n" << P_ << endl;
+
 }
 
 /**
@@ -344,6 +347,9 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
   x_ += K_ * z_diff;
 
   P_ -= K_ * S_ * K_.transpose();
+
+  cout << "Update lidar x: \n" << x_ << endl;
+  cout << "Update lidar P: \n" << P_ << endl;
 }
 
 /**
@@ -468,4 +474,6 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 
   P_ -= K_ * S_ * K_.transpose();
 
+  cout << "Update radar x: \n" << x_ << endl;
+  cout << "Update radar P: \n" << P_ << endl;
 }
