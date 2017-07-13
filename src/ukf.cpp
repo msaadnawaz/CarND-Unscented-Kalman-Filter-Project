@@ -99,7 +99,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
   measurements.
   */
   if (!is_initialized_) {
-
+	  cout<< endl << "initialization started" <<endl;
 	  if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
 		  double rho = meas_package.raw_measurements_[0];
 		  double phi = meas_package.raw_measurements_[1];
@@ -120,18 +120,22 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 
 	  previous_timestamp_ = meas_package.timestamp_;
 	  is_initialized_ = true;
+	  cout<< endl << "initialization done" <<endl;
 	  return;
   }
 
   //////////////////////
   /* ***PREDICTION*** */
   //////////////////////
+  cout<< endl << "processing prediction" <<endl;
   time_us_ = (meas_package.timestamp_ - previous_timestamp_);
   Prediction(time_us_);
+  cout<< endl << "prediction done" <<endl;
 
   //////////////////
   /* ***UPDATE*** */
   //////////////////
+
   if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
 	  UpdateRadar(meas_package);
   }
@@ -139,6 +143,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 	  UpdateLidar(meas_package);
   }
   previous_timestamp_ = meas_package.timestamp_;
+  cout<< endl << "update done" <<endl;
 }
 
 /**
