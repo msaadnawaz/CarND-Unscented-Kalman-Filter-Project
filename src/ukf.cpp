@@ -56,6 +56,14 @@ UKF::UKF() {
   Hint: one or more values initialized above might be wildly off...
   */
 
+  is_initialized_ = false;
+
+  previous_timestamp_ = 0;
+
+  time_us_ = 0;
+
+  lambda_ = 3 - n_aug_;
+
   x_aug_ = VectorXd(n_aug_);
 
   weights_ = VectorXd(2*n_aug_+1);
@@ -69,6 +77,11 @@ UKF::UKF() {
   //matrix with predicted sigma points as columns
   Xsig_pred_ = MatrixXd(n_x_, 2 * n_aug_ + 1);
 
+  //set weights
+  weights_(0) = lambda_/(lambda_+n_aug_);
+  for(int i=1; i<2*n_aug_+1; i++){
+	  weights_(i) = 1/(2*(lambda_+n_aug_));
+  }
 
 }
 
@@ -210,12 +223,6 @@ void UKF::Prediction(double delta_t) {
   ///////////////////////////////////////
   /* ***PREDICT MEAN AND COVARIANCE*** */
   ///////////////////////////////////////
-
-  //set weights
-  weights_(0) = lambda_/(lambda_+n_aug_);
-  for(int i=1; i<2*n_aug_+1; i++){
-	  weights_(i) = 1/(2*(lambda_+n_aug_));
-  }
 
   //predict state mean
   x_.fill(0);
