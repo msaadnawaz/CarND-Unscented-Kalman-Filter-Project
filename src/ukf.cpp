@@ -136,14 +136,15 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
   /* ***UPDATE*** */
   //////////////////
 
-  if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
-	  cout<< endl << "updating radar" <<endl;
-	  UpdateRadar(meas_package);
-  }
-//  else if(meas_package.sensor_type_ == MeasurementPackage::LASER) {
-//	  cout<< endl << "updating lidar" <<endl;
-//	  UpdateLidar(meas_package);
+//  if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
+//	  cout<< endl << "updating radar" <<endl;
+//	  UpdateRadar(meas_package);
 //  }
+//  else
+  if(meas_package.sensor_type_ == MeasurementPackage::LASER) {
+	  cout<< endl << "updating lidar" <<endl;
+	  UpdateLidar(meas_package);
+  }
   previous_timestamp_ = meas_package.timestamp_;
   cout<< endl << "update done" <<endl;
 }
