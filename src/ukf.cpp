@@ -437,7 +437,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   R_ << std_radr_*std_radr_,                       0,                     0,
 		  	  	  	   	  0, std_radphi_*std_radphi_,                     0,
 						  0,                       0, std_radrd_*std_radrd_;
-
+  cout<< endl << "R_ : " << endl << R_ <<endl ;
   //create measurement noise covariance matrix
   MatrixXd S_ = MatrixXd(n_z_,n_z_);
 
@@ -453,7 +453,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   }
 
   S_ += R_;
-
+  cout<< endl << "S_ : " << endl << S_ <<endl ;
   cout<< endl << "measurement prediction done" <<endl;
   /////////////////////////
   /* ***UPDATE STATE*** */
