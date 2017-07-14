@@ -437,7 +437,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 	  while(z_diff(1) < -M_PI)
 		  z_diff(1) += 2*M_PI;
 
-	  S_ += weights_(i) * z_diff * z_diff.transpose();
+	  S_ += weights_(i) * z_ * z_.transpose();
   }
 
   S_ += R_;
