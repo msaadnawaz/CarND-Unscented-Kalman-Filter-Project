@@ -249,6 +249,7 @@ void UKF::Prediction(double delta_t) {
   P_.fill(0);
   for(int i=0; i<2*n_aug_+1; i++){
 	  VectorXd x_diff = Xsig_pred_.col(i) - x_;
+	  cout<< endl << "Xsig_pred_.col(i)"<< i << ":" << endl << Xsig_pred_.col(i) <<endl ;
 	  cout << endl << "x_diff from " << i << ":" << endl << x_diff << endl;
 	  while(x_diff(3) > M_PI)
 		  x_diff(3) -= 2*M_PI;
