@@ -254,7 +254,7 @@ void UKF::Prediction(double delta_t) {
 	  while(x_diff(3) < -M_PI)
 		  x_diff(3) += 2*M_PI;
 	  P_ += weights_(i) * x_diff * x_diff.transpose();
-	  cout << endl<< "P from loop " << i << ":" << endl << P;
+	  cout << endl<< "P from loop " << i << ":" << endl << P_ << endl;
   }
 
   cout << "Prediction x: \n" << x_ << endl;
