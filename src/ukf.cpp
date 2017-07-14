@@ -480,7 +480,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   while(z_diff(1) < -M_PI)
 	  z_diff(1) += 2. * M_PI;
   //update state mean and covariance matrix
-  x_ += K_ * z_;
+  x_ += K_ * z_diff;
 
   P_ -= K_ * S_ * K_.transpose();
 }
