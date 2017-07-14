@@ -294,7 +294,7 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
   double p_x, p_y;
 
   //create transformed sigma point matrix
-  MatrixXd Zsig_ = MatrixXd(n_z_, 2 * n_x_ + 1);
+  MatrixXd Zsig_ = MatrixXd(n_z_, 2 * n_aug_ + 1);
 
   //mean predicted state
   VectorXd z_pred_ = VectorXd(n_z_);
