@@ -170,8 +170,8 @@ void UKF::Prediction(double delta_t) {
 
   P_aug_.fill(0);
   P_aug_.topLeftCorner(5,5) = P_;
-  P_aug_(5,5) = std_a_;
-  P_aug_(6,6) = std_yawdd_;
+  P_aug_(5,5) = std_a_*std_a_;
+  P_aug_(6,6) = std_yawdd_*std_yawdd_;
 
   //calculate square root of P
   MatrixXd A = P_aug_.llt().matrixL();
