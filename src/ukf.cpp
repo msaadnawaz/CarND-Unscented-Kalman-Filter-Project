@@ -403,9 +403,16 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 	  v = Xsig_pred_(2,i);
 	  yaw = Xsig_pred_(3,i);
 
-	  rho = sqrt(p_x*p_x + p_y*p_y);
-	  phi = atan2(p_y,p_x);
-	  rhod = (p_x*cos(yaw)*v + p_y*sin(yaw)*v)/sqrt(p_x*p_x + p_y*p_y);
+	  if(fabs(p_x) > 0.001 && fabs(p_x) > 0.001){
+		  rho = sqrt(p_x*p_x + p_y*p_y);
+		  phi = atan2(p_y,p_x);
+		  rhod = (p_x*cos(yaw)*v + p_y*sin(yaw)*v)/sqrt(p_x*p_x + p_y*p_y);
+	  }
+	  else{
+		  rho = 0;
+		  phi = 0;
+		  rhod = 0;
+	  }
 
 	  Zsig_.col(i) << rho,
 			  	  	  phi,
@@ -437,7 +444,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 	  while(z_diff(1) < -M_PI)
 		  z_diff(1) += 2*M_PI;
 
-	  S_ += weights_(i) * z_ * z_.transpose();
+	  S_ += weights_(i) * z_diff * z_diff.transpose();
   }
 
   S_ += R_;
@@ -468,7 +475,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 	  while(x_diff(3) < -M_PI)
 		  x_diff(3) += 2. * M_PI;
 
-	  Tc_ += weights_(i) * x_diff * z_.transpose();
+	  Tc_ += weights_(i) * x_diff * z_diff.transpose();
   }
 
   //calculate Kalman gain K;
@@ -480,7 +487,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   while(z_diff(1) < -M_PI)
 	  z_diff(1) += 2. * M_PI;
   //update state mean and covariance matrix
-  x_ += K_ * z_;
+  x_ += K_ * z_diff;
 
   P_ -= K_ * S_ * K_.transpose();
 }
