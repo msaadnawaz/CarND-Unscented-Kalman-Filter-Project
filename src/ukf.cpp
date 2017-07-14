@@ -468,7 +468,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 	  while(x_diff(3) < -M_PI)
 		  x_diff(3) += 2. * M_PI;
 
-	  Tc_ += weights_(i) * x_diff * z_diff.transpose();
+	  Tc_ += weights_(i) * x_diff * z_.transpose();
   }
 
   //calculate Kalman gain K;
@@ -480,7 +480,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   while(z_diff(1) < -M_PI)
 	  z_diff(1) += 2. * M_PI;
   //update state mean and covariance matrix
-  x_ += K_ * z_diff;
+  x_ += K_ * z_;
 
   P_ -= K_ * S_ * K_.transpose();
 }
