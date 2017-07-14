@@ -231,7 +231,7 @@ void UKF::Prediction(double delta_t) {
 	  //write predicted sigma points into right column
 	  Xsig_pred_.col(i) = curr_x + integ + proc_noise;
   }
-
+  cout<< endl << "Xsig_pred_ : " << endl << Xsig_pred_ <<endl ;
   cout<< endl << "sigma points prediction done" <<endl;
   ///////////////////////////////////////
   /* ***PREDICT MEAN AND COVARIANCE*** */
@@ -242,14 +242,12 @@ void UKF::Prediction(double delta_t) {
   for(int i=0; i<2*n_aug_+1; i++){
 	  x_ += weights_(i) * Xsig_pred_.col(i);
   }
-
+  cout<< endl << "x_: " << endl << x_ <<endl ;
   //may need to normalize yaw
 
   //predict state covariance matrix
   P_.fill(0);
   for(int i=0; i<2*n_aug_+1; i++){
-	  cout<< endl << "Xsig_pred_.col(i): " << endl << Xsig_pred_.col(i) <<endl ;
-	  cout<< endl << "x_: " << endl << x_ <<endl ;
 	  VectorXd x_diff = Xsig_pred_.col(i) - x_;
 	  while(x_diff(3) > M_PI)
 		  x_diff(3) -= 2*M_PI;
