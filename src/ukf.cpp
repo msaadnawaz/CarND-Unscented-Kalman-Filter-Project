@@ -236,17 +236,19 @@ void UKF::Prediction(double delta_t) {
   ///////////////////////////////////////
   /* ***PREDICT MEAN AND COVARIANCE*** */
   ///////////////////////////////////////
+  VectorXd x = VectorXd(n_x_);
+  MatrixXd P = MatrixXd(n_x_,n_x_);
 
   //predict state mean
-  x_.fill(0);
+  x.fill(0);
   for(int i=0; i<2*n_aug_+1; i++){
-	  x_ += weights_(i) * Xsig_pred_.col(i);
+	  x += weights_(i) * Xsig_pred_.col(i);
   }
-  cout<< endl << "x_: " << endl << x_ <<endl ;
+  cout<< endl << "x_: " << endl << x <<endl ;
   //may need to normalize yaw
 
   //predict state covariance matrix
-  P_.fill(0);
+  P.fill(0);
   for(int i=0; i<2*n_aug_+1; i++){
 	  VectorXd x_diff = Xsig_pred_.col(i) - Xsig_pred_.col(0);
 	  cout<< endl << "Xsig_pred_.col(i)"<< i << ":" << endl << Xsig_pred_.col(i) <<endl ;
@@ -255,9 +257,12 @@ void UKF::Prediction(double delta_t) {
 		  x_diff(3) -= 2*M_PI;
 	  while(x_diff(3) < -M_PI)
 		  x_diff(3) += 2*M_PI;
-	  P_ += weights_(i) * x_diff * x_diff.transpose();
-	  cout << endl<< "P from loop " << i << ":" << endl << P_ << endl;
+	  P += weights_(i) * x_diff * x_diff.transpose();
+	  cout << endl<< "P from loop " << i << ":" << endl << P << endl;
   }
+
+  x_ = x;
+  P_ = P;
 
   cout << "Prediction x: \n" << x_ << endl;
   cout << "Prediction P: \n" << P_ << endl;
