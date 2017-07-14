@@ -28,7 +28,7 @@ UKF::UKF() {
   P_ = MatrixXd(n_x_, n_x_);
 
   // Process noise standard deviation longitudinal acceleration in m/s^2 //incorrectly set by Udacity
-  std_a_ = 0.2;
+  std_a_ = 0.5;
 
   // Process noise standard deviation yaw acceleration in rad/s^2 //incorrectly set by Udacity
   std_yawdd_ = 0.2;
