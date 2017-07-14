@@ -231,7 +231,6 @@ void UKF::Prediction(double delta_t) {
 	  //write predicted sigma points into right column
 	  Xsig_pred_.col(i) = curr_x + integ + proc_noise;
   }
-  cout<< endl << "Xsig_pred_ : " << endl << Xsig_pred_ <<endl ;
   cout<< endl << "sigma points prediction done" <<endl;
   ///////////////////////////////////////
   /* ***PREDICT MEAN AND COVARIANCE*** */
@@ -251,14 +250,11 @@ void UKF::Prediction(double delta_t) {
   P.fill(0);
   for(int i=0; i<2*n_aug_+1; i++){
 	  VectorXd x_diff = Xsig_pred_.col(i) - Xsig_pred_.col(0);
-	  cout<< endl << "Xsig_pred_.col(i)"<< i << ":" << endl << Xsig_pred_.col(i) <<endl ;
-	  cout << endl << "x_diff from " << i << ":" << endl << x_diff << endl;
 	  while(x_diff(3) > M_PI)
 		  x_diff(3) -= 2*M_PI;
 	  while(x_diff(3) < -M_PI)
 		  x_diff(3) += 2*M_PI;
 	  P += weights_(i) * x_diff * x_diff.transpose();
-	  cout << endl<< "P from loop " << i << ":" << endl << P << endl;
   }
 
   x_ = x;
@@ -318,12 +314,12 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
   for(int i=0; i<2*n_aug_+1; i++){
 	  z_pred_ += weights_(i) *Zsig_.col(i);
   }
-
+  cout<< endl << "z_pred_ : " << endl << z_pred_ <<endl;
   //create measurement noise covariance matrix
   MatrixXd R_ = MatrixXd(n_z_,n_z_);
   R_ << std_laspx_*std_laspx_,                     0,
 						  	0, std_laspy_*std_laspy_;
-
+  cout<< endl << "R_ : " << endl << R_ <<endl;
   //create measurement noise covariance matrix
   MatrixXd S_ = MatrixXd(n_z_,n_z_);
 
@@ -333,7 +329,8 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
   }
 
   S_ += R_;
-
+  cout<< endl << "S_ : " << endl << S_ <<endl ;
+  cout<< endl << "lidar measurement prediction done" <<endl;
   /////////////////////////
   /* ***UPDATE STATE*** */
   /////////////////////////
@@ -430,14 +427,14 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   for(int i=0; i<2*n_aug_+1; i++){
 	  z_pred_ += weights_(i) *Zsig_.col(i);
   }
-  cout<< endl << "z_pred_ : " << endl << z_pred_ <<endl ;
+
   //create measurement noise covariance matrix
   MatrixXd R_ = MatrixXd(n_z_,n_z_);
 
   R_ << std_radr_*std_radr_,                       0,                     0,
 		  	  	  	   	  0, std_radphi_*std_radphi_,                     0,
 						  0,                       0, std_radrd_*std_radrd_;
-  cout<< endl << "R_ : " << endl << R_ <<endl ;
+
   //create measurement noise covariance matrix
   MatrixXd S_ = MatrixXd(n_z_,n_z_);
 
@@ -454,7 +451,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 
   S_ += R_;
   cout<< endl << "S_ : " << endl << S_ <<endl ;
-  cout<< endl << "measurement prediction done" <<endl;
+  cout<< endl << "radar measurement prediction done" <<endl;
   /////////////////////////
   /* ***UPDATE STATE*** */
   /////////////////////////
