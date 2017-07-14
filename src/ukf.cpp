@@ -136,12 +136,11 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
   /* ***UPDATE*** */
   //////////////////
 
-//  if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
-//	  cout<< endl << "updating radar" <<endl;
-//	  UpdateRadar(meas_package);
-//  }
-//  else
-  if(meas_package.sensor_type_ == MeasurementPackage::LASER) {
+  if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
+	  cout<< endl << "updating radar" <<endl;
+	  UpdateRadar(meas_package);
+  }
+  else if(meas_package.sensor_type_ == MeasurementPackage::LASER) {
 	  cout<< endl << "updating lidar" <<endl;
 	  UpdateLidar(meas_package);
   }
@@ -388,7 +387,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   double rho, phi, rhod, p_x, p_y, v, yaw;
 
   //create transformed sigma point matrix
-  MatrixXd Zsig_ = MatrixXd(n_z_, 2 * n_aug_ + 1);;
+  MatrixXd Zsig_ = MatrixXd(n_z_, 2 * n_aug_ + 1);
 
   //mean predicted state
   VectorXd z_pred_ = VectorXd(n_z_);
@@ -409,15 +408,15 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 	  rhod = (p_x*cos(yaw)*v + p_y*sin(yaw)*v)/sqrt(p_x*p_x + p_y*p_y);
 
 	  Zsig_.col(i) << rho,
-			  	  	 phi,
-					 rhod;
+			  	  	  phi,
+					  rhod;
   }
 
   //calculate mean predicted measurement
   z_pred_.fill(0);
 
   for(int i=0; i<2*n_aug_+1; i++){
-	  z_pred_ += weights_(i) *Zsig_.col(i);
+	  z_pred_ += weights_(i) * Zsig_.col(i);
   }
 
   //create measurement noise covariance matrix
@@ -481,7 +480,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   while(z_diff(1) < -M_PI)
 	  z_diff(1) += 2. * M_PI;
   //update state mean and covariance matrix
-  x_ += K_ * z_diff;
+  x_ += K_ * z_;
 
   P_ -= K_ * S_ * K_.transpose();
 }
