@@ -108,7 +108,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 		  x_.fill(0);
 		  x_(0) = rho * cos(phi); //px
 		  x_(1) = rho * sin(phi); //py
-		  x_(2) = rhod; //v
+		  x_(2) = sqrt(pow(rhod*cos(phi),2) + pow(rhod*sin(phi),2)); //v
 	  }
 	  else if(meas_package.sensor_type_ == MeasurementPackage::LASER) {
 		  x_.fill(0);
