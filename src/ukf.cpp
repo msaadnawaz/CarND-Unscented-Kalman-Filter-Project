@@ -128,8 +128,8 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
   /* ***PREDICTION*** */
   //////////////////////
   cout<< endl << "processing prediction" <<endl;
-  time_us_ = (meas_package.timestamp_ - previous_timestamp_);
-  Prediction(time_us_);
+  double delta_t = (meas_package.timestamp_ - previous_timestamp_)/100000.0;
+  Prediction(delta_t);
   cout<< endl << "prediction done" <<endl;
 
   //////////////////
