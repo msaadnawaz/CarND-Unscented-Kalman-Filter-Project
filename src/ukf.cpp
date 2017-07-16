@@ -302,7 +302,7 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
 
   //mean predicted state
   VectorXd z_pred_ = VectorXd(n_z_);
-
+  Zsig_.fill(0);
   //transform sigma points into measurement space
   for(int i=0; i<2*n_aug_+1; i++){
       p_x = Xsig_pred_(0,i);
@@ -402,7 +402,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   //////////////////////////////////
   /* ***MEASUREMENT PREDICTION*** */
   //////////////////////////////////
-
+  Zsig_.fill(0);
   //transform sigma points into measurement space
   for(int i=0; i<2*n_aug_+1; i++){
 	  p_x = Xsig_pred_(0,i);
@@ -410,7 +410,7 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
 	  v = Xsig_pred_(2,i);
 	  yaw = Xsig_pred_(3,i);
 
-	  if(fabs(p_x) > 0.001 && fabs(p_x) > 0.001){
+	  if(fabs(p_x) > 0.001 && fabs(p_y) > 0.001){
 		  rho = sqrt(p_x*p_x + p_y*p_y);
 		  phi = atan2(p_y,p_x);
 		  rhod = (p_x*cos(yaw)*v + p_y*sin(yaw)*v)/sqrt(p_x*p_x + p_y*p_y);
