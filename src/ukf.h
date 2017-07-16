@@ -112,6 +112,8 @@ public:
    * @param meas_package The measurement at k+1
    */
   void UpdateRadar(MeasurementPackage meas_package);
+
+  void Init(double std_a_, double std_yawdd_);
 };
 
 #endif /* UKF_H */
