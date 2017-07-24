@@ -26,7 +26,7 @@ std::string hasData(std::string s) {
   return "";
 }
 
-int main(int argc, char *argv[])
+int main()
 {
   uWS::Hub h;
 
@@ -38,9 +38,6 @@ int main(int argc, char *argv[])
   vector<VectorXd> estimations;
   vector<VectorXd> ground_truth;
 
-  double init_std_a_ = atof(argv[1]); //-0.15
-  double init_std_yawdd_ = atof(argv[2]); //0
-  ukf.Init(init_std_a_, init_std_yawdd_);
 
   h.onMessage([&ukf,&tools,&estimations,&ground_truth](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
